@@ -7,8 +7,12 @@
     "compile": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/Chrriis/rrdiagram-js.git"
+  },
   "keywords": [],
-  "author": "",
+  "author": "Christopher Deckers <chrriis@nextencia.net>",
   "license": "ASL 2.0",
   "dependencies": {
     "babel-core": "^6.25.0",
@@ -17,4 +21,5 @@
     "babel-preset-latest": "^6.24.1",
     "webpack": "^2.6.1"
   }
+  
 }
