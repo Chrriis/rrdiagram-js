@@ -29,6 +29,26 @@ H2_SELECT =
 Usage
 =====
 
+To convert BNF text to a nice diagram, place the text in a `pre` tag and give it a class like `BNF`. Then include rrdiagram.js in your webpage. At the end of your page, add the following script to replace all those `pre` tags using the `BNF` class with a div that uses the `BNFSVG` class:
+```Javascript
+var bnfDisplay = new rrdiagram.bnfdisplay.BNFDisplay();
+bnfDisplay.replaceBNF('BNF', 'BNFSVG');
+```
+
+Styles used by the produced diagrams must be defined in the page. Here is an example of those definitions:
+```CSS
+.rrConnector {fill:none;stroke:#222222;}
+.rrRule {fill:#d3f0ff;stroke:#222222;}
+.rrRuleText {fill:#000000;font-family:Verdana,Sans-serif;font-size:12px;}
+.rrLiteral {fill:#90d9ff;stroke:#222222;}
+.rrLiteralText {fill:#000000;font-family:Verdana,Sans-serif;font-size:12px;}
+.rrSpecialSequence {fill:#e4f4ff;stroke:#222222;}
+.rrSpecialSequenceText {fill:#000000;font-family:Verdana,Sans-serif;font-size:12px;}
+.rrLoopCardinalities {fill:#000000;font-family:Verdana,Sans-serif;font-size:10px;}
+```
+
+The whole API is available too.
+
 The diagram model represents the actual constructs visible on the diagram.
 To convert a diagram model to SVG:
 ```Javascript
