@@ -44,7 +44,7 @@ var grammar = new rrdiagram.model.Grammar(rules);
 var grammarToRRDiagram = new rrdiagram.model.GrammarToRRDiagram();
 var rules = grammar.getRules();
 for(var i=0; i<rules.length; i++) {
-  RRDiagram rrDiagram = grammarToRRDiagram.convert(rules[i]);
+  var rrDiagram = grammarToRRDiagram.convert(rules[i]);
   // Do something with diagram, like get the SVG.
 }
 ```
