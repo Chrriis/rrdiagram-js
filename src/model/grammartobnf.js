@@ -26,7 +26,7 @@ export default class GrammarToBNF {
         this.literalDefinitionSign = LiteralDefinitionSign.QUOTE;
         this.isCommaSeparator = false;
         this.isUsingMultiplicationTokens = false;
-        this.ruleConsideredAsLinebreak = null;
+        this.ruleConsideredAsLineBreak = null;
     }
 
     /**

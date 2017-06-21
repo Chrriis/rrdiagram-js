@@ -24,8 +24,8 @@ export default class RuleReference extends Expression {
      * @return {RRElement}
      */
     toRRElement(grammarToRRDiagram) {
-        const ruleConsideredAsLinebreak = grammarToRRDiagram.ruleConsideredAsLinebreak;
-        if (ruleConsideredAsLinebreak != null && ruleConsideredAsLinebreak === this.ruleName) {
+        const ruleConsideredAsLineBreak = grammarToRRDiagram.ruleConsideredAsLineBreak;
+        if (ruleConsideredAsLineBreak != null && ruleConsideredAsLineBreak === this.ruleName) {
             return new RRBreak();
         }
         const ruleLinkProvider = grammarToRRDiagram.ruleLinkProvider;
@@ -39,8 +39,8 @@ export default class RuleReference extends Expression {
      */
     toBNF(grammarToBNF, sb, isNested) {
         sb.push(this.ruleName);
-        const ruleConsideredAsLinebreak = grammarToBNF.ruleConsideredAsLinebreak;
-        if (ruleConsideredAsLinebreak != null && ruleConsideredAsLinebreak === this.ruleName) {
+        const ruleConsideredAsLineBreak = grammarToBNF.ruleConsideredAsLineBreak;
+        if (ruleConsideredAsLineBreak != null && ruleConsideredAsLineBreak === this.ruleName) {
             sb.push("\n");
         }
     }

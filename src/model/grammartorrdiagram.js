@@ -5,7 +5,7 @@ export default class GrammarToRRDiagram {
 
     constructor() {
         this.ruleLinkProvider = (ruleName) => '#' + ruleName;
-        this.ruleConsideredAsLinebreak = null;
+        this.ruleConsideredAsLineBreak = null;
     }
 
     /**
