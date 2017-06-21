@@ -1,8 +1,8 @@
 {
   "name": "rrdiagram-js",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Generate railroad diagrams from code or BNF, generate BNF from code",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "compile": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,7 +11,7 @@
     "type" : "git",
     "url" : "https://github.com/Chrriis/rrdiagram-js.git"
   },
-  "keywords": [],
+  "keywords": ["railroad", "syntax", "diagram", "bnf", "ebnf", "svg"],
   "author": "Christopher Deckers <chrriis@nextencia.net>",
   "license": "ASL 2.0",
   "dependencies": {
