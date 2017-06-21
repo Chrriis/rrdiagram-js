@@ -64,7 +64,7 @@ export default class RRDiagram {
         const elements = svgContent.getElements();
         // Then generate the rest (CSS and SVG container tags) based on that usage.
         const sb = [];
-        sb.push("<svg version=\"1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://www.w3.org/2000/svg\" width=\"", width, "\" height=\"", height, "\">");
+        sb.push("<svg version=\"1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://www.w3.org/2000/svg\" width=\"", width, "\" height=\"", height, "\" viewbox=\"0 0 " + width + " " + height + "\">");
         /*    String styles = svgContent.getCSSStyles();
             if(styles.length() > 0) {
               sb.push("<defs><style type=\"text/css\">");
