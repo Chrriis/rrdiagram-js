@@ -1,0 +1,20 @@
+{
+  "name": "rrdiagram-js",
+  "version": "1.0.0",
+  "description": "Generate railroad diagrams from code or BNF, generate BNF from code",
+  "main": "index.js",
+  "scripts": {
+    "compile": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ASL 2.0",
+  "dependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.0.0",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-latest": "^6.24.1",
+    "webpack": "^2.6.1"
+  }
+}

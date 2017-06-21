@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta charset="utf-8">
+  <title>RRDiagam-JS Test 1</title>
+  <style type="text/css">
+    .rrConnector {fill:none;stroke:#222222;}
+    .rrRule {fill:#d3f0ff;stroke:#222222;}
+    .rrRuleText {fill:#000000;font-family:Verdana,Sans-serif;font-size:12px;}
+    .rrLiteral {fill:#90d9ff;stroke:#222222;}
+    .rrLiteralText {fill:#000000;font-family:Verdana,Sans-serif;font-size:12px;}
+    .rrSpecialSequence {fill:#e4f4ff;stroke:#222222;}
+    .rrSpecialSequenceText {fill:#000000;font-family:Verdana,Sans-serif;font-size:12px;}
+    .rrLoopCardinalities {fill:#000000;font-family:Verdana,Sans-serif;font-size:10px;}
+  </style>
+  <script src="./rrdiagram.js"></script> 
+</head>
+<body>
+  Hello World
+  <span>
+    x=<pre class="BNF">"DSL.least(" ( FieldExpression (", " FieldExpression)* | ObjectExpression (", " ObjectExpression)* ) ")" Field?;</pre>
+  </span>
+  done.
+<script>
+  function testRR() {
+      var rrDiagram_ = new rrdiagram.ui.RRDiagram(new rrdiagram.ui.RRLoop(
+          new rrdiagram.ui.RRChoice(
+              new rrdiagram.ui.RRSequence(new rrdiagram.ui.RRText(rrdiagram.ui.RRText.Type.RULE, "Something", "#Sthg"), new rrdiagram.ui.RRChoice(
+                  new rrdiagram.ui.RRSequence(new rrdiagram.ui.RRText(rrdiagram.ui.RRText.Type.LITERAL, "-", null), new rrdiagram.ui.RRText(rrdiagram.ui.RRText.Type.RULE, "Item", "#Item")),
+                  new rrdiagram.ui.RRLoop(new rrdiagram.ui.RRText(rrdiagram.ui.RRText.Type.RULE, "Another item", "#AnotherItem"), null),
+                  new rrdiagram.ui.RRLoop(new rrdiagram.ui.RRText(rrdiagram.ui.RRText.Type.RULE, "xxx", "#yyy"), new rrdiagram.ui.RRText(rrdiagram.ui.RRText.Type.LITERAL, ",", null)),
+                  new rrdiagram.ui.RRLine())
+              ),
+              new rrdiagram.ui.RRLine()
+          ),
+          new rrdiagram.ui.RRText(rrdiagram.ui.RRText.Type.LITERAL, ";", "http://www.google.com"))
+      );
+      var rrDiagramToSVG = new rrdiagram.ui.RRDiagramToSVG();
+      return rrDiagram_.toSVG(rrDiagramToSVG);
+  }
+</script>
+<script>
+  function loadBNF() {
+    var s = "AggregateFunction = ( '.keepDenseRankFirstOrderBy(' ( [ FieldExpression { ',' FieldExpression } ] | [ SortFieldExpression { ',' SortFieldExpression } ] | CollectionExpression ) ')' WindowBeforeOverStep | '.keepDenseRankLastOrderBy(' ( [ FieldExpression { ',' FieldExpression } ] | [ SortFieldExpression { ',' SortFieldExpression } ] | CollectionExpression ) ')' WindowBeforeOverStep | '.over()' WindowPartitionByStep ) ( Field | WindowOverStep );\n";
+    s+="\n";
+    s+="x = \"DSL.least(\" ( FieldExpression (\", \" FieldExpression)* | ObjectExpression (\", \" ObjectExpression)* ) \")\" Field?;\n";
+    s+="\n";
+    s+="H2_SELECT = \n";
+    s+="'SELECT' [ 'TOP' term ] [ 'DISTINCT' | 'ALL' ] selectExpression {',' selectExpression} \\\n";
+    s+="'FROM' tableExpression {',' tableExpression} [ 'WHERE' expression ] \\\n";
+    s+="[ 'GROUP BY' expression {',' expression} ] [ 'HAVING' expression ] \\\n";
+    s+="[ ( 'UNION' [ 'ALL' ] | 'MINUS' | 'EXCEPT' | 'INTERSECT' ) select ] [ 'ORDER BY' order {',' order} ] \\\n";
+    s+="[ 'LIMIT' expression [ 'OFFSET' expression ] [ 'SAMPLE_SIZE' rowCountInt ] ] \\\n";
+    s+="[ 'FOR UPDATE' ];\n";
+    s+="\n";
+    s+="BNFa = RR ('Diagram' RR)*;\n";
+    s+="BNFb = Diagram ('RR' Diagram)*;\n";
+    s+="\n";
+    s+="BNF1 = a*;\n";
+    s+="BNF2 = a+;\n";
+    s+="BNF3 = a?;\n";
+    s+="BNF4 = a (',' a)*;\n";
+    s+="BNF5 = 3 * a;\n";
+    s+="BNF6 = 3 * a?;\n";
+    s+="BNF7 = a 3 * (',' a);\n";
+    s+="BNF8 = a 3 * (',' a)?;\n";
+    s+="\n";
+    s+="BNF9 = a (? [a-zA-Z]+ ?) 3 * (',' a)?;\n";
+    s+="\n";
+    s+="BNF10 = a | () | c;\n";
+    s+="BNF11 = 3 * 'a<b\"';\n";
+    return s;
+  }
+</script>
+<script>
+  function loadRules(bnf) {
+    var bnfToGrammar = new rrdiagram.model.BNFToGrammar();
+    var grammar = bnfToGrammar.convert(bnf);
+    var rules = grammar.getRules();
+    return rules;
+ }
+</script>
+<script>
+  function testRule(rule) {
+    var grammarToRRDiagram = new rrdiagram.model.GrammarToRRDiagram();
+    grammarToRRDiagram.setRuleConsideredAsLineBreak("\\");
+    var rrDiagram = grammarToRRDiagram.convert(rule);
+    var rrDiagramToSVG = new rrdiagram.ui.RRDiagramToSVG();
+    var svg = rrDiagramToSVG.convert(rrDiagram);
+    return svg;
+  }
+</script>
+<script>
+  var bnfDisplay = new rrdiagram.bnfdisplay.BNFDisplay();
+  bnfDisplay.replaceBNF('BNF', 'BNFSVG');
+  // Direct API test.  
+  var rrSvg = testRR();
+  var div1 = document.createElement("div");
+  document.body.appendChild(div1);
+  div1.innerHTML = rrSvg;
+  var bnf = loadBNF();
+  var rules = loadRules(bnf);
+  for(var i=0; i<rules.length; i++) {
+    var rule = rules[i];
+    var ruleName = rule.getName();
+    var ruleSvg = testRule(rule);
+    var div2 = document.createElement("div");
+    document.body.appendChild(document.createTextNode(ruleName));
+    document.body.appendChild(div2);
+    div2.innerHTML = ruleSvg;
+  }
+  // Conversion of model to BNF.
+  var grammarToBNF = new rrdiagram.model.GrammarToBNF();
+  for(var i=0; i<rules.length; i++) {
+    var rule = rules[i];
+    var reverseBNF = rule.toBNF(grammarToBNF);
+    document.body.appendChild(document.createTextNode(reverseBNF));
+  }
+</script>
+</body>
+
+</html>
