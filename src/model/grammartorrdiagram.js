@@ -8,22 +8,6 @@ export default class GrammarToRRDiagram {
         this.ruleConsideredAsLinebreak = null;
     }
 
-    setRuleLinkProvider(ruleLinkProvider) {
-        this.ruleLinkProvider = ruleLinkProvider;
-    }
-
-    getRuleLinkProvider() {
-        return this.ruleLinkProvider;
-    }
-
-    setRuleConsideredAsLineBreak(ruleConsideredAsLinebreak) {
-        this.ruleConsideredAsLinebreak = ruleConsideredAsLinebreak;
-    }
-
-    getRuleConsideredAsLinebreak() {
-        return this.ruleConsideredAsLinebreak;
-    }
-
     /**
      * @param {Rule} rule 
      * @return {RRDiagram}

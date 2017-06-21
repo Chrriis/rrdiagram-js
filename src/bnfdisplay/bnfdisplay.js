@@ -7,7 +7,7 @@ export default class BNFDisplay {
     constructor() {
         this.bnfToGrammar = new BNFToGrammar();
         this.grammarToRRDiagram = new GrammarToRRDiagram();
-        this.grammarToRRDiagram.setRuleConsideredAsLineBreak("\\");
+        this.grammarToRRDiagram.ruleConsideredAsLineBreak = "\\";
         this.rrDiagramToSVG = new RRDiagramToSVG();
     }
 

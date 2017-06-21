@@ -84,7 +84,7 @@
 <script>
   function testRule(rule) {
     var grammarToRRDiagram = new rrdiagram.model.GrammarToRRDiagram();
-    grammarToRRDiagram.setRuleConsideredAsLineBreak("\\");
+    grammarToRRDiagram.ruleConsideredAsLineBreak = "\\";
     var rrDiagram = grammarToRRDiagram.convert(rule);
     var rrDiagramToSVG = new rrdiagram.ui.RRDiagramToSVG();
     var svg = rrDiagramToSVG.convert(rrDiagram);
