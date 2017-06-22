@@ -112,7 +112,7 @@ export default class Repetition extends Expression {
             } else {
                 if (this.minRepetitionCount == this.maxRepetitionCount) {
                     sb.push(this.minRepetitionCount, " * ");
-                    this.expression.toBNF(grammarToBNF, sb, false);
+                    this.expression.toBNF(grammarToBNF, sb, isNested);
                 } else {
                     if (isNested) {
                         sb.push("( ");

@@ -15,7 +15,7 @@ export default class Sequence extends Expression {
      */
     constructor(expressions) {
         super();
-        if(arguments.length == 0) {
+        if (arguments.length == 0) {
             expressions = [];
         } else if (expressions.constructor !== Array) {
             expressions = arguments;
@@ -39,12 +39,20 @@ export default class Sequence extends Expression {
         for (let i = 0; i < this.expressions.length; i++) {
             const expression = this.expressions[i];
             let rrElement = expression.toRRElement(grammarToRRDiagram);
-            // Treat special case of: a (',' a)*
+            // Treat special case of: "a (',' a)*" and "a (a)*"
             if (i < this.expressions.length - 1 && expression instanceof RuleReference && this.expressions[i + 1] instanceof Repetition) {
                 const ruleLink = expression;
                 const repetition = this.expressions[i + 1];
                 const repetitionExpression = repetition.getExpression();
-                if (repetitionExpression instanceof Sequence) {
+                // Treat special case of: a (a)*
+                if (repetitionExpression instanceof RuleReference && repetitionExpression.getRuleName().equals(ruleLink.getRuleName())) {
+                    const maxRepetitionCount = repetition.getMaxRepetitionCount();
+                    if (maxRepetitionCount == null || maxRepetitionCount > 1) {
+                        rrElement = new RRLoop(ruleLink.toRRElement(grammarToRRDiagram), null, repetition.getMinRepetitionCount(), (maxRepetitionCount == null ? null : maxRepetitionCount));
+                        i++;
+                    }
+                } else if (repetitionExpression instanceof Sequence) {
+                    // Treat special case of: a (',' a)*
                     const subExpressions = repetitionExpression.getExpressions();
                     if (subExpressions.length == 2 && subExpressions[0] instanceof Literal && subExpressions[1] instanceof RuleReference && subExpressions[1].getRuleName() === ruleLink.getRuleName()) {
                         const maxRepetitionCount = repetition.getMaxRepetitionCount();
