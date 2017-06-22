@@ -15,7 +15,7 @@ Example
 This is the kind of diagrams that can get generated:
 ![H2 Select](http://rrdiagram.sourceforge.net/H2Select.svg)
 
-The above is generated using the right convertion options on this BNF:
+The above is generated using the right conversion options on this BNF:
 <pre>
 H2_SELECT = 
 'SELECT' [ 'TOP' term ] [ 'DISTINCT' | 'ALL' ] selectExpression {',' selectExpression} \
