@@ -45,4 +45,15 @@ export default class RuleReference extends Expression {
         }
     }
 
+    /**
+     * @param {*} o 
+     * @return {boolean}
+     */
+    equals(o) {
+        if(!(o instanceof RuleReference)) {
+            return false;
+        }
+        return this.ruleName == o.ruleName;
+    }
+
 }

@@ -21,4 +21,11 @@ export default class Expression {
     toBNF(grammarToBNF, sb, isNested) {
     }
 
+    /**
+     * @param {*} o 
+     * @return {boolean}
+     */
+    equals(o) {
+    }
+
 }

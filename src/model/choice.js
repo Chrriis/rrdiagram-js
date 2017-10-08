@@ -90,4 +90,23 @@ export default class Choice extends Expression {
         }
     }
 
+    /**
+     * @param {*} o 
+     * @return {boolean}
+     */
+    equals(o) {
+        if(!(o instanceof Choice)) {
+            return false;
+        }
+        if(this.expressions.length != o.expressions.length) {
+            return false;
+        }
+        for (let i = 0; i < this.expressions.length; i++) {
+            if(!this.expressions[i].equals(o.expressions[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

@@ -34,4 +34,15 @@ export default class Literal extends Expression {
         sb.push(c);
     }
 
+    /**
+     * @param {*} o 
+     * @return {boolean}
+     */
+    equals(o) {
+        if(!(o instanceof Literal)) {
+            return false;
+        }
+        return this.text == o.text;
+    }
+
 }

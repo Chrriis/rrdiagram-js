@@ -33,4 +33,15 @@ export default class SpecialSequence extends Expression {
         sb.push(" ?)");
     }
 
+    /**
+     * @param {*} o 
+     * @return {boolean}
+     */
+    equals(o) {
+        if(!(o instanceof SpecialSequence)) {
+            return false;
+        }
+        return this.text == o.text;
+    }
+
 }

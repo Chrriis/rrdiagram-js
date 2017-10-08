@@ -133,4 +133,15 @@ export default class Repetition extends Expression {
         }
     }
 
+    /**
+     * @param {*} o 
+     * @return {boolean}
+     */
+    equals(o) {
+        if(!(o instanceof Repetition)) {
+            return false;
+        }
+        return this.expression.equals(o.expression) && this.minRepetitionCount == o.minRepetitionCount && this.maxRepetitionCount == null? o.maxRepetitionCount == null: this.maxRepetitionCount.equals(o.maxRepetitionCount);
+    }
+
 }
