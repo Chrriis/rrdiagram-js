@@ -1,6 +1,6 @@
 {
   "name": "rrdiagram-js",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Generate railroad diagrams from code or BNF, generate BNF from code",
   "main": "main.js",
   "scripts": {

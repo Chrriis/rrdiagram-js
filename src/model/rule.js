@@ -8,10 +8,12 @@ export default class Rule {
     /**
      * @param {string} name 
      * @param {Expression} expression 
+     * @param {?string} originalExpressionText 
      */
-    constructor(name, expression) {
+    constructor(name, expression, originalExpressionText) {
         this.name = name;
         this.expression = expression;
+        this.originalExpressionText = originalExpressionText;
     }
 
     /**
@@ -19,6 +21,13 @@ export default class Rule {
      */
     getName() {
         return this.name;
+    }
+
+    /**
+     * @return {?string}
+     */
+    getOriginalExpressionText() {
+        return this.originalExpressionText;
     }
 
     /**

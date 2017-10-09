@@ -5,11 +5,12 @@ import Grammar from './grammar';
 /**
  * @param {string} name
  * @param {Chunk} chunk
+ * @param {string} originalExpressionText
  */
-function createRule(name, chunk) {
+function createRule(name, chunk, originalExpressionText) {
     chunk.prune();
     const expression = chunk.getExpression();
-    const rule = new Rule(name, expression);
+    const rule = new Rule(name, expression, originalExpressionText);
     return rule;
 }
 
@@ -17,8 +18,10 @@ function createRule(name, chunk) {
  * @param {Chunk} parentChunk
  * @param {function(): string} readNext
  * @param {string} stopChar
+ * @return {string}
  */
 function loadExpression(parentChunk, readNext, stopChar) {
+    const expressionTextSB = [];
     let lastChar = 0;
     const sb = [];
     let isFirst = true;
@@ -26,11 +29,12 @@ function loadExpression(parentChunk, readNext, stopChar) {
     let specialGroupChar = 0;
     const isLiteral = parentChunk.getType() == Chunk.ChunkType.LITERAL;
     for (let c; (c = readNext()) != -1;) {
+        expressionTextSB.push(c);
         if (isLiteral) {
             if (c == stopChar) {
                 const s = sb.join("");
                 parentChunk.setText(s);
-                return;
+                return expressionTextSB.join("");
             }
             sb.push(c);
         } else {
@@ -57,7 +61,7 @@ function loadExpression(parentChunk, readNext, stopChar) {
                     let comment = sb.join("");
                     comment = comment.slice(1, comment.length - 1).trim();
                     parentChunk.setText(comment);
-                    return;
+                    return expressionTextSB.join("");
                 }
                 if (sb.length > 0 || !/\s/.test(c)) {
                     sb.push(c);
@@ -68,7 +72,7 @@ function loadExpression(parentChunk, readNext, stopChar) {
                     if (content.length > 0) {
                         parentChunk.addChunk(new Chunk(Chunk.ChunkType.RULE, content));
                     }
-                    return;
+                    return expressionTextSB.join("");
                 }
                 switch (c) {
                     case ',':
@@ -111,7 +115,8 @@ function loadExpression(parentChunk, readNext, stopChar) {
                         }
                         sb.length = 0;
                         const literalChunk = new Chunk(Chunk.ChunkType.LITERAL);
-                        loadExpression(literalChunk, readNext, '\"');
+                        const subExpressionText = loadExpression(literalChunk, readNext, '\"');
+                        expressionTextSB.push(subExpressionText);
                         parentChunk.addChunk(literalChunk);
                         break;
                     }
@@ -122,7 +127,8 @@ function loadExpression(parentChunk, readNext, stopChar) {
                         }
                         sb.length = 0;
                         const literalChunk = new Chunk(Chunk.ChunkType.LITERAL);
-                        loadExpression(literalChunk, readNext, '\'');
+                        const subExpressionText = loadExpression(literalChunk, readNext, '\'');
+                        expressionTextSB.push(subExpressionText);
                         parentChunk.addChunk(literalChunk);
                         break;
                     }
@@ -133,7 +139,8 @@ function loadExpression(parentChunk, readNext, stopChar) {
                         }
                         sb.length = 0;
                         const groupChunk = new Chunk(Chunk.ChunkType.GROUP);
-                        loadExpression(groupChunk, readNext, ')');
+                        const subExpressionText = loadExpression(groupChunk, readNext, ')');
+                        expressionTextSB.push(subExpressionText);
                         parentChunk.addChunk(groupChunk);
                         break;
                     }
@@ -144,7 +151,8 @@ function loadExpression(parentChunk, readNext, stopChar) {
                         }
                         sb.length = 0;
                         const optionChunk = new Chunk(Chunk.ChunkType.OPTION);
-                        loadExpression(optionChunk, readNext, ']');
+                        const subExpressionText = loadExpression(optionChunk, readNext, ']');
+                        expressionTextSB.push(subExpressionText);
                         parentChunk.addChunk(optionChunk);
                         break;
                     }
@@ -156,7 +164,8 @@ function loadExpression(parentChunk, readNext, stopChar) {
                         sb.length = 0;
                         const repetitionChunk = new Chunk(Chunk.ChunkType.REPETITION);
                         repetitionChunk.setMinCount(0);
-                        loadExpression(repetitionChunk, readNext, '}');
+                        const subExpressionText = loadExpression(repetitionChunk, readNext, '}');
+                        expressionTextSB.push(subExpressionText);
                         parentChunk.addChunk(repetitionChunk);
                         break;
                     }
@@ -171,6 +180,7 @@ function loadExpression(parentChunk, readNext, stopChar) {
             lastChar = c;
         }
     }
+    return expressionTextSB.join("");
 }
 
 
@@ -199,17 +209,20 @@ export default class BNFToGrammar {
             switch (c) {
                 case '=': {
                     const chunk = new Chunk(Chunk.ChunkType.GROUP);
-                    loadExpression(chunk, readNext, ';');
+                    let expressionText = loadExpression(chunk, readNext, ';');
+                    if(expressionText.endsWith(";")) {
+                        expressionText = expressionText.slice(0, expressionText.length - 1);
+                    }
                     let ruleName = sb.join("");
                     sb.length = 0;
                     if (ruleName.endsWith(":")) {
-                        ruleName = ruleName.slice(0, ruleName.length() - 1);
+                        ruleName = ruleName.slice(0, ruleName.length - 1);
                         if (ruleName.endsWith(":")) {
-                            ruleName = ruleName.slice(0, ruleName.length() - 1);
+                            ruleName = ruleName.slice(0, ruleName.length - 1);
                         }
                     }
                     ruleName = ruleName.trim();
-                    const rule = createRule(ruleName, chunk);
+                    const rule = createRule(ruleName, chunk, expressionText);
                     ruleList.push(rule);
                     break;
                 }
